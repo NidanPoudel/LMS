@@ -1,0 +1,9 @@
+out
+test
+test.c
+*.o
+
+# data files
+books
+info
+inventory
