@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include<conio.h>
 
 #include "modules/inventory.h"
 #include "modules/fileio.h"
@@ -12,6 +13,7 @@ int userOptions();
 int options();
 void pause();
 void login();
+
 
 int main()
 {
@@ -28,6 +30,7 @@ void login(){
         printf("2. Admin Login\n");
         printf("0. Exit\n");
 
+        char ch;int i;
         int choice;
         scanf("%d", &choice);
 
@@ -40,13 +43,28 @@ void login(){
                 scanf("%s", username);
 
                 printf("Enter password: ");
-                scanf("%s", password);
+                while (1) {
+                    ch = getch(); 
+                    if (ch == '\r' || ch == '\n') {  // Check for Enter key
+                        password[i] = '\0';  // 
+                        break;
+                    }
+                    else if (ch == '\b' && i > 0) {  // Handle backspace
+                        printf("\b \b");
+                        i--;
+                    }
+                    else if (i < 32 - 1) {  // Limit password length
+                        password[i] = ch;
+                        printf("*");
+                        i++;
+                    }
+                }
 
                 int userId = authenticateUser("user.txt", username, password);
                 if (userId != -1) {
                     userUI();
                 } else {
-                    printf("User Login failed. Invalid username or password.\n");
+                    printf("\nUser Login failed. Invalid username or password.\n");
                     pause(1);
                 }
                 break;
@@ -60,14 +78,28 @@ void login(){
                 scanf("%s", username);
 
                 printf("Enter admin password: ");
-                scanf("%s", password);
+                while (1) {
+                    ch = getch(); 
+                    if (ch == '\r' || ch == '\n') {  // Check for Enter key
+                        password[i] = '\0';  // 
+                        break;
+                    }
+                    else if (ch == '\b' && i > 0) {  // Handle backspace
+                        printf("\b \b");
+                        i--;
+                    }
+                    else if (i < 32 - 1) {  // Limit password length
+                        password[i] = ch;
+                        printf("*");
+                        i++;
+                    }
+                }
 
                 int adminId = authenticateUser("admin.txt", username, password);
-                printf("admin id: %d\n",adminId);
                 if (adminId != -1) {
                     adminUI();
                 } else {
-                    printf("Admin Login failed. Invalid username or password.\n");
+                    printf("\nAdmin Login failed. Invalid username or password.\n");
                     pause(1);
                 }
                 break;
@@ -251,3 +283,4 @@ void pause(int do_get)
     while(fgetc(stdin) != '\n');
     printf("\n");
 }
+
